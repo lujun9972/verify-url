@@ -88,3 +88,7 @@
     (switch-to-buffer (get-buffer-create verify-url-buffer))
     (erase-buffer)
     (insert (format "invalid urls:\n%s" (string-join  invalid-urls "\n")))))
+
+(provide 'verify-url)
+
+;;; verify-url.el ends here
