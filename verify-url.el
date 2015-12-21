@@ -43,7 +43,7 @@
   "verify url group")
 
 (defcustom verify-url-regex
-  "\\(file://\\|ftp://\\|http://\\|https://\\)[^][:blank:]\r\n<>{}()*#$^['\\|]+"
+  "\\(file\\|ftp\\|http\\|https\\)://[^][:blank:]\r\n<>{}()*#$^['\\|]+"
   "regex that used to recognize urls")
 
 
