@@ -87,7 +87,7 @@
               (push url invalid-urls))))))
     (switch-to-buffer (get-buffer-create verify-url-buffer))
     (erase-buffer)
-    (insert (format "invalid urls:\n%s" (string-join  invalid-urls "\n")))))
+    (insert (format "invalid urls:\n%s" (mapconcat #'identity invalid-urls "\n")))))
 
 (provide 'verify-url)
 
