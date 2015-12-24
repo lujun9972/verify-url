@@ -142,7 +142,6 @@
       (setq pos (previous-overlay-change pos)))
     (goto-char pos)))
 
-
 (provide 'verify-url)
 
 ;;; verify-url.el ends here
