@@ -90,11 +90,13 @@
 ;;;###autoload
 (defun verify-url (&optional start end)
   "find out invalid urls in buffer or region"
-  (interactive "r")
-  (when (and (called-interactively-p 'any)
-             (not (use-region-p)))
-    (setq start (point-min))
-    (setq end (point-max)))
+  (interactive)
+  (if (and (called-interactively-p 'any)
+           (use-region-p))
+      (setq start (region-beginning)
+            end (region-end))
+    (setq start (point-min)
+          end (point-max)))
   (with-silent-modifications
     (save-excursion
       (goto-char start)
