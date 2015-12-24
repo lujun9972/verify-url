@@ -6,7 +6,7 @@
 ;; Created: 2015-12-21
 ;; Version: 0.1
 ;; Keywords: convenience, usability, url
-;; Package-Requires: ((cl-lib "0.5"))
+;; Package-Requires: ((cl-lib "0.5") (url) )
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -41,6 +41,7 @@
 ;;; Code:
 
 (require 'cl-lib)
+(require 'url)
 
 (defgroup verify-url nil
   "verify url group"
