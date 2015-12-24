@@ -40,18 +40,25 @@
 ;;; Code:
 
 (defgroup verify-url nil
-  "verify url group")
+  "verify url group"
+  :prefix "verify-url")
 
 (defcustom verify-url-regex
   "\\(file\\|ftp\\|http\\|https\\)://[^][:blank:]\r\n<>{}()*#$^['\\|]+"
   "regex that used to recognize urls")
 
-
 (defcustom verify-url-time-out 10
-  "expire time when connect to remote machine")
+  "expire time when connect to remote machine"
+  :group 'verify-url)
 
 (defcustom verify-url-buffer "*verify-url*"
-  "buffer to show the found invalid urls")
+  "buffer to show the found invalid urls"
+  :group 'verify-url)
+
+(defface verify-url-invalid-url-face '((t :underline t
+                                          :foreground "red"))
+         "Face for the invalid url."
+         :group 'verify-url)
 
 (defun verify-url--url-readable-p (url)
   (ignore-errors
@@ -69,25 +76,33 @@
                 (t
                  (file-readable-p url))))))))
 
+(defun verify-url--make-invalid-url-overlay (start end)
+  "make an invalid-url-overlay between START and END which face is `verify-url-invalid-url-face'"
+  (let ((o (make-overlay start end)))
+    (overlay-put o 'face 'verify-url-invalid-url-face)
+    (overlay-put o 'verify-url-invali-url-overlay t)
+    ;; (overlay-put o 'help-echo "invalid-url")
+    o))
+
 ;;;###autoload
 (defun verify-url (&optional start end)
   "find out invalid urls in buffer or region"
   (interactive "r")
   (when (and (called-interactively-p 'any)
-			 (not (use-region-p)))
-	(setq start (point-min))
-	(setq end (point-max)))
-  (let (invalid-urls)
-    (with-silent-modifications
-      (save-excursion
-        (goto-char start)
-        (while (re-search-forward verify-url-regex end t)
-          (let ((url (match-string 0 )))
-            (unless (verify-url--url-readable-p url)
-              (push url invalid-urls))))))
-    (switch-to-buffer (get-buffer-create verify-url-buffer))
-    (erase-buffer)
-    (insert (format "invalid urls:\n%s" (string-join  invalid-urls "\n")))))
+             (not (use-region-p)))
+    (setq start (point-min))
+    (setq end (point-max)))
+  (with-silent-modifications
+    (save-excursion
+      (goto-char start)
+      (while (re-search-forward verify-url-regex end t)
+        (let* ((url (match-string 0 ))
+               (beg (match-beginning 0))
+               (end (match-end 0)))
+          (unless (verify-url--url-readable-p url)
+            (remove-overlays beg end)
+            (verify-url--make-invalid-url-overlay beg end)))))))
+
 
 (provide 'verify-url)
 
