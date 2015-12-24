@@ -124,7 +124,8 @@
          (overlay (verify-url--invalid-url-overlay-at pos)))
     (when overlay
       (setq pos (overlay-end overlay)))
-    (while (not (verify-url--invalid-url-overlay-at pos))
+    (while (not (or (verify-url--invalid-url-overlay-at pos)
+                    (equal pos (point-max))))
       (setq pos (next-overlay-change pos)))
     (goto-char pos)))
 
@@ -135,7 +136,8 @@
          (overlay (verify-url--invalid-url-overlay-at pos)))
     (when overlay
       (setq pos (overlay-start overlay)))
-    (while (not (verify-url--invalid-url-overlay-at pos))
+    (while (not (or (verify-url--invalid-url-overlay-at pos)
+                    (equal pos (point-min))))
       (setq pos (previous-overlay-change pos)))
     (goto-char pos)))
 
