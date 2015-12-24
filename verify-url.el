@@ -79,11 +79,16 @@
                 (t
                  (file-readable-p url))))))))
 
+(defun verify-url-modification-hook (overlay after-change-p beg end &optional length)
+  "Remove the invalid-url-overlay when the url changed"
+  (delete-overlay overlay))
+
 (defun verify-url--make-invalid-url-overlay (start end)
   "make an invalid-url-overlay between START and END which face is `verify-url-invalid-url-face'"
   (let ((o (make-overlay start end)))
     (overlay-put o 'face 'verify-url-invalid-url-face)
     (overlay-put o 'verify-url-invalid-url-overlay t)
+    (overlay-put o 'modification-hooks '(verify-url-modification-hook))
     ;; (overlay-put o 'help-echo "invalid-url")
     o))
 
