@@ -39,6 +39,8 @@
 
 ;;; Code:
 
+(require 'cl-lib)
+
 (defgroup verify-url nil
   "verify url group"
   :prefix "verify-url")
@@ -80,9 +82,12 @@
   "make an invalid-url-overlay between START and END which face is `verify-url-invalid-url-face'"
   (let ((o (make-overlay start end)))
     (overlay-put o 'face 'verify-url-invalid-url-face)
-    (overlay-put o 'verify-url-invali-url-overlay t)
+    (overlay-put o 'verify-url-invalid-url-overlay t)
     ;; (overlay-put o 'help-echo "invalid-url")
     o))
+
+(defun verify-url--invalid-url-overlay-p (overlay)
+  (overlay-get overlay 'verify-url-invalid-url-overlay))
 
 ;;;###autoload
 (defun verify-url (&optional start end)
@@ -102,6 +107,40 @@
           (unless (verify-url--url-readable-p url)
             (remove-overlays beg end)
             (verify-url--make-invalid-url-overlay beg end)))))))
+
+(defun verify-url--find-invalid-url-overlays (start end)
+  "find out invalid-url-overlays between START and END"
+  (let ((overlays (overlays-in start end)))
+    (cl-remove-if-not (lambda (o)
+                        (not (verify-url--invalid-url-overlay-p o)))
+                      overlays)))
+
+(defun verify-url--invalid-url-overlay-at (pos)
+  "returns invalid-url-overlay that cover the character at position POS"
+  (let ((overlays (overlays-at pos)))
+    (cl-find-if #'verify-url--invalid-url-overlay-p overlays)))
+
+(defun verify-url-next-invalid-url (&optional pos)
+  "goto next invalid-url after POS which is default to (point). if none,returns (point-max)"
+  (interactive)
+  (let* ((pos (or pos (point)))
+         (overlay (verify-url--invalid-url-overlay-at pos)))
+    (when overlay
+      (setq pos (overlay-end overlay)))
+    (while (not (verify-url--invalid-url-overlay-at pos))
+      (setq pos (next-overlay-change pos)))
+    (goto-char pos)))
+
+(defun verify-url-previous-invalid-url (&optional pos)
+  "goto next invalid-url before POS which is default to (point). if none,returns (point-min)"
+  (interactive)
+  (let* ((pos (or pos (point)))
+         (overlay (verify-url--invalid-url-overlay-at pos)))
+    (when overlay
+      (setq pos (overlay-start overlay)))
+    (while (not (verify-url--invalid-url-overlay-at pos))
+      (setq pos (previous-overlay-change pos)))
+    (goto-char pos)))
 
 
 (provide 'verify-url)
