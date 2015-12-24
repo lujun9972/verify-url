@@ -1,0 +1,15 @@
+#+TITLE: README
+#+AUTHOR: lujun9972
+#+CATEGORY: verify-url
+#+DATE: [2015-12-24 四 22:04]
+#+OPTIONS: ^:{}
+* What is verify-url
+verify-url is a little tool that used to find out invalid urls in the buffer or region
+* Usage
+Execute the command `verify-url', it will mark invalid urls in the buffer with `verify-url-invalid-url-face'
+
+If there is a active region, it will mark invalid urls in the region with `verify-url-invalid-url-face'
+
+After the executed `verify-url' command, you can use command `verify-url-next-invalid-url' to goto next invalid-url.
+
+and, you can use command `verify-url-previous-invalid-url' to goto previous invalid-url.
