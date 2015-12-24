@@ -94,8 +94,7 @@
 (defun verify-url (&optional start end)
   "find out invalid urls in buffer or region"
   (interactive)
-  (if (and (called-interactively-p 'any)
-           (use-region-p))
+  (if (use-region-p)
       (setq start (region-beginning)
             end (region-end))
     (setq start (point-min)
