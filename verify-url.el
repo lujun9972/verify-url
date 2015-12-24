@@ -42,6 +42,9 @@
 
 (require 'cl-lib)
 (require 'url)
+(require 'url-file)
+(require 'url-http)
+(require 'url-ftp)
 
 (defgroup verify-url nil
   "verify url group"
