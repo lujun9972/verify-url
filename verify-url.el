@@ -6,6 +6,7 @@
 ;; Created: 2015-12-21
 ;; Version: 0.1
 ;; Keywords: convenience, usability, url
+;; Package-Requires: ((cl-lib "0.5"))
 
 ;; This file is NOT part of GNU Emacs.
 
