@@ -10,6 +10,6 @@ Execute the command `verify-url', it will mark invalid urls in the buffer with `
 
 If there is a active region, it will mark invalid urls in the region with `verify-url-invalid-url-face'
 
-After the executed `verify-url' command, you can use command `verify-url-next-invalid-url' to goto next invalid-url.
+After executed `verify-url' command, you can use command `verify-url-next-invalid-url' to goto next invalid-url.
 
 and, you can use command `verify-url-previous-invalid-url' to goto previous invalid-url.
