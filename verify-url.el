@@ -135,7 +135,9 @@
   (let* ((pos (or pos (point)))
          (overlay (verify-url--invalid-url-overlay-at pos)))
     (when overlay
-      (setq pos (overlay-start overlay)))
+      (setq pos (overlay-start overlay))
+      (unless (equal (point-min) pos)
+        (setq pos (- pos 1))))
     (while (not (or (verify-url--invalid-url-overlay-at pos)
                     (equal pos (point-min))))
       (setq pos (previous-overlay-change pos)))
