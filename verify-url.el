@@ -53,10 +53,6 @@
   "expire time when connect to remote machine"
   :group 'verify-url)
 
-(defcustom verify-url-buffer "*verify-url*"
-  "buffer to show the found invalid urls"
-  :group 'verify-url)
-
 (defface verify-url-invalid-url-face '((t :underline t
                                           :foreground "red"))
          "Face for the invalid url."
