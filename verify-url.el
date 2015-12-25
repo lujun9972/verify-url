@@ -48,7 +48,8 @@
 
 (defgroup verify-url nil
   "verify url group"
-  :prefix "verify-url")
+  :prefix "verify-url"
+  :group 'url)
 
 (defcustom verify-url-regex
   "\\(file\\|ftp\\|http\\|https\\)://[^][:blank:]\r\n<>{}()*#$^['\\|]+"
