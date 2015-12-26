@@ -51,15 +51,15 @@
   :prefix "verify-url"
   :group 'url)
 
-(defcustom verify-url-regex
+(defcustom verify-url/regex
   "\\(file\\|ftp\\|http\\|https\\)://[^][:blank:]\r\n<>{}()*#$^['\\|]+"
   "regex that used to recognize urls")
 
-(defcustom verify-url-time-out 10
+(defcustom verify-url/time-out 10
   "expire time when connect to remote machine"
   :group 'verify-url)
 
-(defface verify-url-invalid-url-face '((t :underline t
+(defface verify-url/invalid-url-face '((t :underline t
                                           :foreground "red"))
          "Face for the invalid url."
          :group 'verify-url)
@@ -67,7 +67,7 @@
 (defun verify-url--url-readable-p (url)
   (ignore-errors
     (save-match-data
-      (with-timeout (verify-url-time-out nil)
+      (with-timeout (verify-url/time-out nil)
         (let ((url-type (url-type (url-generic-parse-url url))))
           (cond ((equal url-type "ftp")
                  (url-ftp-file-readable-p url))
@@ -80,21 +80,21 @@
                 (t
                  (file-readable-p url))))))))
 
-(defun verify-url-modification-hook (overlay after-change-p beg end &optional length)
+(defun verify-url/modification-hook (overlay after-change-p beg end &optional length)
   "Remove the invalid-url-overlay when the url changed"
   (delete-overlay overlay))
 
 (defun verify-url--make-invalid-url-overlay (start end)
-  "make an invalid-url-overlay between START and END which face is `verify-url-invalid-url-face'"
+  "make an invalid-url-overlay between START and END which face is `verify-url/invalid-url-face'"
   (let ((o (make-overlay start end)))
-    (overlay-put o 'face 'verify-url-invalid-url-face)
-    (overlay-put o 'verify-url-invalid-url-overlay t)
-    (overlay-put o 'modification-hooks '(verify-url-modification-hook))
+    (overlay-put o 'face 'verify-url/invalid-url-face)
+    (overlay-put o 'verify-url/invalid-url-overlay t)
+    (overlay-put o 'modification-hooks '(verify-url/modification-hook))
     ;; (overlay-put o 'help-echo "invalid-url")
     o))
 
 (defun verify-url--invalid-url-overlay-p (overlay)
-  (overlay-get overlay 'verify-url-invalid-url-overlay))
+  (overlay-get overlay 'verify-url/invalid-url-overlay))
 
 ;;;###autoload
 (defun verify-url (&optional start end)
@@ -108,7 +108,7 @@
   (with-silent-modifications
     (save-excursion
       (goto-char start)
-      (while (re-search-forward verify-url-regex end t)
+      (while (re-search-forward verify-url/regex end t)
         (let* ((url (match-string 0 ))
                (beg (match-beginning 0))
                (end (match-end 0)))
@@ -128,7 +128,7 @@
   (let ((overlays (overlays-at pos)))
     (cl-find-if #'verify-url--invalid-url-overlay-p overlays)))
 
-(defun verify-url-next-invalid-url (&optional pos)
+(defun verify-url/next-invalid-url (&optional pos)
   "goto next invalid-url after POS which is default to (point). if none,returns (point-max)"
   (interactive)
   (let* ((pos (or pos (point)))
@@ -140,7 +140,7 @@
       (setq pos (next-overlay-change pos)))
     (goto-char pos)))
 
-(defun verify-url-previous-invalid-url (&optional pos)
+(defun verify-url/previous-invalid-url (&optional pos)
   "goto next invalid-url before POS which is default to (point). if none,returns (point-min)"
   (interactive)
   (let* ((pos (or pos (point)))
