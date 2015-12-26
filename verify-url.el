@@ -59,6 +59,9 @@
   "expire time when connect to remote machine"
   :group 'verify-url)
 
+(defcustom verify-url/auto-jump-to-first-invalid-url t
+  "If non-nil, automatically jump to the first invalid url")
+
 (defface verify-url/invalid-url-face '((t :underline t
                                           :foreground "red"))
          "Face for the invalid url."
@@ -105,16 +108,21 @@
             end (region-end))
     (setq start (point-min)
           end (point-max)))
-  (with-silent-modifications
-    (save-excursion
-      (goto-char start)
-      (while (re-search-forward verify-url/regex end t)
-        (let* ((url (match-string 0 ))
-               (beg (match-beginning 0))
-               (end (match-end 0)))
-          (unless (verify-url--url-readable-p url)
-            (remove-overlays beg end)
-            (verify-url--make-invalid-url-overlay beg end)))))))
+  (let (invalid-urls)
+    (with-silent-modifications
+      (save-excursion
+        (goto-char start)
+        (while (re-search-forward verify-url/regex end t)
+          (let* ((url (match-string 0 ))
+                 (beg (match-beginning 0))
+                 (end (match-end 0)))
+            (unless (verify-url--url-readable-p url)
+              (push url invalid-urls)
+              (remove-overlays beg end)
+              (verify-url--make-invalid-url-overlay beg end)))))
+      (when (and verify-url/auto-jump-to-first-invalid-url
+                 invalid-urls)
+        (verify-url/next-invalid-url (point-min))))))
 
 (defun verify-url--find-invalid-url-overlays (start end)
   "find out invalid-url-overlays between START and END"
