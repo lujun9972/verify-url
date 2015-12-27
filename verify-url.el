@@ -118,10 +118,11 @@
                  (beg (match-beginning 0))
                  (end (match-end 0)))
             (unless (verify-url--url-readable-p url)
-              (message "invalid-url:%s" url)
               (push url invalid-urls)
               (remove-overlays beg end)
               (verify-url--make-invalid-url-overlay beg end)))))
+      (when invalid-urls
+        (message "verify-url(s):\n%s" (mapconcat #'identity invalid-urls "\n")))
       (when (and verify-url/auto-jump-to-first-invalid-url
                  invalid-urls)
         (verify-url/next-invalid-url (point-min))))))
