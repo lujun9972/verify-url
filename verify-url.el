@@ -118,6 +118,7 @@
                  (beg (match-beginning 0))
                  (end (match-end 0)))
             (unless (verify-url--url-readable-p url)
+              (message "invalid-url:%s" url)
               (push url invalid-urls)
               (remove-overlays beg end)
               (verify-url--make-invalid-url-overlay beg end)))))
