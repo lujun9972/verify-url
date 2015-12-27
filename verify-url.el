@@ -7,6 +7,7 @@
 ;; Version: 0.1
 ;; Keywords: convenience, usability, url
 ;; Package-Requires: ((cl-lib "0.5") (url) )
+;; URL: https://github.com/lujun9972/verify-url
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -25,7 +26,7 @@
 
 ;;; Source code
 ;;
-;; dmenu's code can be found here:
+;; verify-url's code can be found here:
 ;;   http://github.com/lujun9972/verify-url
 
 ;;; Commentary:
