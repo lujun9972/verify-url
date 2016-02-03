@@ -64,7 +64,7 @@
   "If non-nil, automatically jump to the first invalid url")
 
 (defface verify-url/invalid-url-face '((t :underline t
-                                          :foreground "red"))
+                                          :inherit 'font-lock-warning-face))
          "Face for the invalid url."
          :group 'verify-url)
 
