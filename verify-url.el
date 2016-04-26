@@ -6,7 +6,7 @@
 ;; Created: 2015-12-21
 ;; Version: 0.1
 ;; Keywords: convenience, usability, url
-;; Package-Requires: ((cl-lib "0.5") (url) )
+;; Package-Requires: ((cl-lib "0.5"))
 ;; URL: https://github.com/lujun9972/verify-url
 
 ;; This file is NOT part of GNU Emacs.
@@ -64,7 +64,7 @@
   "If non-nil, automatically jump to the first invalid url")
 
 (defface verify-url/invalid-url-face '((t :underline t
-                                          :foreground "red"))
+                                          :inherit 'font-lock-warning-face))
          "Face for the invalid url."
          :group 'verify-url)
 
