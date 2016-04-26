@@ -1,6 +1,6 @@
 ;;; verify-url.el --- find out invalid urls in the buffer or region
 
-;; Copyright (C) 2004-2015 Free Software Foundation, Inc.
+;; Copyright (C) 2004-2015 DarkSun <lujun9972@gmail.com>.
 
 ;; Author: DarkSun <lujun9972@gmail.com>
 ;; Created: 2015-12-21
